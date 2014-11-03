@@ -1,8 +1,18 @@
+require "restaurant"
+
 class Guide
 	def initialize (path = nil)
-		# load
-		# create
-		# exit if failed
+		Restaurant.filepath = path
+		print "Loading data... "
+		if Restaurant.file_exists?
+			puts "found!"
+		elsif
+			Restaurant.create_file
+			puts "created!"
+		else
+			puts "failed!"
+			exit!
+		end
 	end
 	
 	def launch!
