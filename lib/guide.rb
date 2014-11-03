@@ -4,7 +4,7 @@ class Guide
 	def initialize (path = nil)
 		Restaurant.filepath = path
 		print "Loading data... "
-		if Restaurant.file_exists?
+		if Restaurant.file_usable?
 			puts "found!"
 		elsif
 			Restaurant.create_file
