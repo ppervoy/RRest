@@ -56,13 +56,33 @@ class Guide
 		when "find"
 			puts "Finding:"
 		when "add"
-			puts "Adding:"
+			add
 		when "quit"
 			return :quit
 		when "exit"
 			return :quit
 		else
 			puts "Unknown command..."
+		end
+	end
+	
+	def add
+		puts "New restaurant..."
+		
+		restaurant = Restaurant.new
+		print "  Restaurant name: "
+		restaurant.name = gets.chomp.strip
+	
+		print "  Cuisine type: "
+		restaurant.cuisine = gets.chomp.strip
+	
+		print "  Average check: "
+		restaurant.price = gets.chomp.strip
+		
+		if restaurant.save
+			puts "Saved!"
+		else
+			puts "Error occured saving restaurant!"
 		end
 	end
 	
