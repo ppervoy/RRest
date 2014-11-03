@@ -1,4 +1,5 @@
 require "restaurant"
+require "support/string_extend"
 
 class Guide
 	class Config
@@ -79,19 +80,40 @@ class Guide
 	end
 	
 	def list
-		puts "Saved restautrants:"
-		r = Restaurant.saved_restaurants
-		r.each do |rest|
-			puts rest.name + " | " + rest.cuisine + " | " + rest.price
-		end
+		output_action_header ("Saved restautrants")
+
+		output_restaurant_table(Restaurant.saved_restaurants)
 	end
 	
 	def intro
-		puts "Welcome to Ruby Restaurants (RRest)"
-		puts "the place to find things you love"
+		output_action_header("Welcome to Ruby Restaurants (RRest)")
+		output_action_header("the place to find things you love")
 	end
 	
 	def conclusion
-		puts "See you soon again!"
+		output_action_header("See you soon again!")
+	end
+	
+	private
+	
+	def output_action_header(text)
+		puts text.upcase.center(64)
+	end
+	
+	def output_restaurant_table(r=[])
+		print " " + "Name".ljust(30)
+		print " " + "Cuisine".ljust(20)
+		print " " + "Price".rjust(10) + "\n"
+		puts "-" * 64
+		
+		r.each do |rest|
+			line = " " << rest.name.titleize.ljust(30)
+			line << " " << rest.cuisine.titleize.ljust(20)
+			line << " " << rest.formatted_price.rjust(10)
+			puts line
+		end
+		
+		puts "No restaurants are saved..." if r.empty?
+		puts "-" * 64
 	end
 end
