@@ -25,13 +25,15 @@ class Guide
 	end
 	
 	def launch!
+		system("clear")
+		
 		intro
 
 		result = nil
 
 		until result == :quit
-			action = get_action
-			res = do_action(action)
+			action, args = get_action
+			res = do_action(action, args)
 			break if res == :quit
 		end
 
@@ -42,20 +44,22 @@ class Guide
 		action = nil
 	
 		until Guide::Config.actions.include?(action)
-			puts "Available actions: " + Guide::Config.actions.join(", ") if action 
+			puts "Actions: " + Guide::Config.actions.join(", ") if action 
 			print "> "
 			user_response = gets.chomp
-			action = user_response.downcase.strip
+			args = user_response.downcase.strip.split(" ")
+			action = args.shift
 		end
-		return action	
+		return action, args	
 	end
-	
-	def do_action(action)
+		
+	def do_action(action, args=[])
 		case action
 		when "list"
 			list
 		when "find"
-			puts "Finding:"
+			keyword = args.shift
+			find(keyword)
 		when "add"
 			add
 		when "quit"
@@ -64,6 +68,20 @@ class Guide
 			return :quit
 		else
 			puts "Unknown command..."
+		end
+	end
+	
+	def find(keyword="")
+		if keyword
+			restaurants = Restaurant.saved_restaurants
+			found = restaurants.select do |rest|
+				rest.name.downcase.include?(keyword.downcase) ||
+					rest.cuisine.downcase.include?(keyword.downcase) ||
+						rest.price.to_i <= keyword.to_i
+				end
+				output_restaurant_table(found)
+		else
+			puts "Example: find mexican"
 		end
 	end
 	
@@ -113,7 +131,7 @@ class Guide
 			puts line
 		end
 		
-		puts "No restaurants are saved..." if r.empty?
+		puts "No restaurants here..." if r.empty?
 		puts "-" * 64
 	end
 end
