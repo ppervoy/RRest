@@ -21,6 +21,21 @@ class Restaurant
 	end
 	
 	def self.saved_restaurants
+		r = []
+		if file_usable?
+			file = File.new(@@filepath, 'r')
+			file.each_line do |line|
+				r << Restaurant.new.import_line(line.chomp)
+			end
+			file.close
+			return r
+		end
+	end
+	
+	def import_line(line)
+		line_array = line.split("\t")
+		@name, @cuisine, @price = line_array
+		return self
 	end
 	
 	def initialize(args={})
