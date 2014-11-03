@@ -1,8 +1,8 @@
 class Restaurant
-	@@filepath = nil
+	@@filepath=nil
 	
 	def self.filepath=(path=nil)
-		@@filepath = path
+		@@filepath=path
 	end
 	
 	def self.file_usable?

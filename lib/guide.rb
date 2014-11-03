@@ -1,8 +1,8 @@
 require "restaurant"
 
 class Guide
-	def initialize (path = nil)
-		Restaurant.filepath = path
+	def initialize (path=nil)
+		Restaurant.filepath=path
 		print "Loading data... "
 		if Restaurant.file_usable?
 			puts "found!"
@@ -17,11 +17,34 @@ class Guide
 	
 	def launch!
 		intro
-		# action loop
-		#  prompt
-		#  do
-		# repeat until qut
+
+		result = nil
+
+		until result == :quit
+			print "> "
+			command = gets.chomp
+			res = do_action (command)
+			break if res == :quit
+		end
+
 		conclusion
+	end
+	
+	def do_action(action)
+		case action
+		when "list"
+			puts "Listing:"
+		when "find"
+			puts "Finding:"
+		when "add"
+			puts "Adding:"
+		when "quit"
+			return :quit
+		when "exit"
+			return :quit
+		else
+			puts "Unknown command..."
+		end
 	end
 	
 	def intro
