@@ -69,15 +69,7 @@ class Guide
 	def add
 		puts "New restaurant..."
 		
-		restaurant = Restaurant.new
-		print "  Restaurant name: "
-		restaurant.name = gets.chomp.strip
-	
-		print "  Cuisine type: "
-		restaurant.cuisine = gets.chomp.strip
-	
-		print "  Average check: "
-		restaurant.price = gets.chomp.strip
+		restaurant = Restaurant.build_using_questions
 		
 		if restaurant.save
 			puts "Saved!"
