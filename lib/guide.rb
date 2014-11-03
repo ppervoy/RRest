@@ -1,6 +1,14 @@
 require "restaurant"
 
 class Guide
+	class Config
+		@@actions = ["list", "find", "add", "quit", "exit"]
+		
+		def self.actions
+			return @@actions
+		end
+	end
+
 	def initialize (path=nil)
 		Restaurant.filepath=path
 		print "Loading data... "
@@ -21,13 +29,24 @@ class Guide
 		result = nil
 
 		until result == :quit
-			print "> "
-			command = gets.chomp
-			res = do_action (command)
+			action = get_action
+			res = do_action(action)
 			break if res == :quit
 		end
 
 		conclusion
+	end
+	
+	def get_action
+		action = nil
+	
+		until Guide::Config.actions.include?(action)
+			puts "Available actions: " + Guide::Config.actions.join(", ") if action 
+			print "> "
+			user_response = gets.chomp
+			action = user_response.downcase.strip
+		end
+		return action	
 	end
 	
 	def do_action(action)
